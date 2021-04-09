@@ -1,0 +1,60 @@
+import copy
+
+N,M=map(int,input().split())
+
+a=list()
+
+for i in range(N):
+    x,y=map(int,input().split())
+    a.append((x,y))
+
+g=list()
+
+for i in range(N):
+    g.append([])
+    for j in range(N):
+        if i!=j:
+            g[i].append((((a[i][0]-a[j][0])**2)+((a[i][1]-a[j][1])**2))**(1/2))
+
+        else:
+            g[i].append(0)
+
+b=list()
+
+for i in range(M):
+    x,y=map(int,input().split())
+    g[x-1][y-1]=0
+    g[y-1][x-1]=0
+
+d=copy.deepcopy(g[0])
+visit=[0]*N
+visit[0]=1
+
+t=0
+
+while(1):
+    cnt=0
+    m=10000000
+    mi=0
+    for j in range(N):
+        if visit[j]==0:
+            if d[j]<m:
+                m=d[j]
+                mi=j
+
+    t+=d[mi]
+    d[mi]=0
+    visit[mi]=1
+    for j in range(N):
+        if g[mi][j]<d[j]:
+            d[j]=g[mi][j]
+
+    for j in range(N):
+        if visit[j]==1:
+            cnt+=1
+
+    if cnt==N:
+        break
+
+
+print('%.2f'%t)
